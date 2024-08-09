@@ -1,0 +1,1 @@
+{"class_name": "ConditionalGAN", "config": {"name": "conditional_gan", "trainable": true, "dtype": {"module": "keras", "class_name": "FloatDTypePolicy", "config": {"name": "float32"}, "registered_name": null}, "latent_dim": 128}}
