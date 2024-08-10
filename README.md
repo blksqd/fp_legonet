@@ -9,4 +9,4 @@
 
 <h2> Repository Structure </h2>
 
-<p>This repository is divided into two main blocks: a research block and a production block. The research block contains all iterations, files, and a rather wild and unorganized carry of attempts to find the best combinations of architectures, hyperparameters, backbones, and information to perform the aforementioned task. The production block contains the best performing setup for the experiment on the two main datasets used: The ISIC and HAM Datasets.</p>
+<p>This repository is divided into two main blocks: a research block and a production block. The research block contains all iterations, files, and a rather wild and unorganized carry of attempts to find the best combinations of architectures, hyperparameters, backbones, and information to perform the aforementioned task. The production block contains the best-performing setup for the experiment on the two main datasets used: The ISIC and HAM Datasets.</p>
