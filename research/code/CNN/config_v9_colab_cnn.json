@@ -1,0 +1,45 @@
+{
+  "paths": {
+    "base_dir": "/content/drive/MyDrive/2024/University/FP",
+    "csv_path": "/content/drive/MyDrive/2024/University/FP/csv_files/patches_with_labels.csv",
+    "img_dir": "/content/drive/MyDrive/2024/University/FP/Images/img_patches",
+    "model_save_path": "/content/drive/MyDrive/2024/University/FP/models/skin_lesion_model.keras"
+  },
+  "training": {
+    "validation_split": 0.2,
+    "fraction": 1.0,
+    "batch_size": 16,
+    "epochs": 100,
+    "initial_learning_rate": 0.0001,
+    "learning_rate_decay": 0.85,
+    "patience": 10,
+    "reduce_lr_factor": 0.2,
+    "reduce_lr_patience": 5,
+    "min_lr": 1e-7
+  },
+  "data_augmentation": {
+    "rescale": 0.00392156862745098,
+    "rotation_range": 40,
+    "width_shift_range": 0.5,
+    "height_shift_range": 0.5,
+    "shear_range": 0.3,
+    "zoom_range": 0.4,
+    "horizontal_flip": true,
+    "vertical_flip": true,
+    "brightness_range": [0.4, 1.5]
+  },
+  "model_architecture": {
+    "input_shape": [64, 64, 3],
+    "conv_layers": [
+      { "filters": 32, "kernel_size": [3, 3], "activation": "relu" },
+      { "filters": 64, "kernel_size": [3, 3], "activation": "relu" },
+      { "filters": 128, "kernel_size": [3, 3], "activation": "relu" },
+      { "filters": 256, "kernel_size": [3, 3], "activation": "relu" }
+    ],
+    "pool_size": [2, 2],
+    "dense_layers": [{ "units": 512, "activation": "softmax" }],
+    "dropout_rate": 0.2,
+    "batch_normalization": true,
+    "l2_regularization": 0.0001
+  }
+}
