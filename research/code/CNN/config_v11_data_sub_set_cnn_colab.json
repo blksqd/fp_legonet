@@ -16,7 +16,7 @@
     "reduce_lr_factor": 0.5,
     "reduce_lr_patience": 5,
     "min_lr": 1e-7,
-    "sample_fraction": 0.2,
+    "sample_fraction": 0.4,
     "use_pruning": true,
     "quantization": "post_training"
   },
