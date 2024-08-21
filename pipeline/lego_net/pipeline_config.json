@@ -1,14 +1,11 @@
 {
   "paths": {
-    "base_dir": "/path/to/your/base_dir",
-    "csv_path": "/path/to/your/csv_files/patches_with_labels.csv",
-    "img_dir": "/path/to/your/Images/img_patches",
-    "model_save_path": "/path/to/your/CNN/models/skin_lesion_model.keras",
-    "tf_record_path": "/path/to/your/TFRecords",
+    "csv_path": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/csv_files/patches_with_labels.csv",
+    "img_dir": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/samples",
     "pretrained_cgan_model": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/models/CGAN.h5",
     "pretrained_cvt_model": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/models/CvT.h5",
     "pretrained_cnn_model": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/models/CNN.h5",
-    "input_image": "/path/to/input_image.jpg"
+    "input_image": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/samples/ISIC_0024414.jpg"
   },
   "data_augmentation": {
     "rotation_range": 30,
@@ -17,7 +14,6 @@
     "shear_range": 0.2,
     "zoom_range": 0.2,
     "horizontal_flip": true,
-    "vertical_flip": false,
     "brightness_range": [0.8, 1.2],
     "use_gaussian_noise": true,
     "use_motion_blur": true,
