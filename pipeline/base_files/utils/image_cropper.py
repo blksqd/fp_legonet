@@ -2,24 +2,17 @@ import os
 import cv2
 import numpy as np
 
-# Define source and target directories
-source_dir = '/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/stage_2/Images/isic_mel'
-target_dir = '/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/stage_2/Images/cropped_isic_mel_imgs'
-
-# Create the target directory if it doesn't exist
-os.makedirs(target_dir, exist_ok=True)
-
 def crop_and_center_image(image_path, target_size=(256, 256), lesion_proportion=0.8):
     # Read the image
     image = cv2.imread(image_path)
     if image is None:
         print(f"Failed to load image: {image_path}")
-        return
+        return None
 
     # Convert the image to the HSV color space
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    # Define range for detecting dark lesions (need to find the right ranges that affect the most cases)
+    # Define range for detecting dark lesions (I haven't found the best ranges still)
     lower = np.array([0, 20, 20])
     upper = np.array([179, 255, 255])
 
@@ -32,7 +25,7 @@ def crop_and_center_image(image_path, target_size=(256, 256), lesion_proportion=
     # If no contours are found, skip this image
     if not contours:
         print(f"No contours found in image: {image_path}")
-        return
+        return None
 
     # Find the largest contour which is assumed to be the lesion
     largest_contour = max(contours, key=cv2.contourArea)
@@ -75,14 +68,3 @@ def crop_and_center_image(image_path, target_size=(256, 256), lesion_proportion=
         cropped_image = cv2.resize(cropped_image, target_size, interpolation=cv2.INTER_LINEAR)
 
     return cropped_image
-
-# Process each image
-for image_file in os.listdir(source_dir):
-    if image_file.endswith('.jpg'):
-        image_path = os.path.join(source_dir, image_file)
-        cropped_image = crop_and_center_image(image_path)
-        if cropped_image is not None:
-            # Save the processed image
-            save_path = os.path.join(target_dir, image_file)
-            cv2.imwrite(save_path, cropped_image)
-            print(f"Cropped and saved: {image_file}")

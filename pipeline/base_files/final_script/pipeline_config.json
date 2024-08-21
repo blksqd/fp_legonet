@@ -1,0 +1,30 @@
+{
+  "paths": {
+    "base_dir": "/path/to/your/base_dir",
+    "csv_path": "/path/to/your/csv_files/patches_with_labels.csv",
+    "img_dir": "/path/to/your/Images/img_patches",
+    "model_save_path": "/path/to/your/CNN/models/skin_lesion_model.keras",
+    "tf_record_path": "/path/to/your/TFRecords",
+    "pretrained_cgan_model": "/path/to/pretrained_cGAN_model.h5",
+    "pretrained_cvt_model": "/path/to/pretrained_CvT_model.h5",
+    "pretrained_cnn_model": "/path/to/pretrained_CNN_model.h5",
+    "input_image": "/path/to/input_image.jpg"
+  },
+  "data_augmentation": {
+    "rotation_range": 30,
+    "width_shift_range": 0.2,
+    "height_shift_range": 0.2,
+    "shear_range": 0.2,
+    "zoom_range": 0.2,
+    "horizontal_flip": true,
+    "vertical_flip": false,
+    "brightness_range": [0.8, 1.2],
+    "use_gaussian_noise": true,
+    "use_motion_blur": true,
+    "use_grid_distortion": true,
+    "clahe_clip_limit": 2.0,
+    "use_sharpen": true,
+    "use_emboss": true,
+    "use_random_brightness_contrast": true
+  }
+}
