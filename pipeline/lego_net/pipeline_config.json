@@ -5,9 +5,9 @@
     "img_dir": "/path/to/your/Images/img_patches",
     "model_save_path": "/path/to/your/CNN/models/skin_lesion_model.keras",
     "tf_record_path": "/path/to/your/TFRecords",
-    "pretrained_cgan_model": "/path/to/pretrained_cGAN_model.h5",
-    "pretrained_cvt_model": "/path/to/pretrained_CvT_model.h5",
-    "pretrained_cnn_model": "/path/to/pretrained_CNN_model.h5",
+    "pretrained_cgan_model": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/models/CGAN.h5",
+    "pretrained_cvt_model": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/models/CvT.h5",
+    "pretrained_cnn_model": "/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipeline/models/CNN.h5",
     "input_image": "/path/to/input_image.jpg"
   },
   "data_augmentation": {
