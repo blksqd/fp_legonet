@@ -1,3 +1,10 @@
+"""
+Make sure all models are in the right directory and called from the configuration file.
+the models can be switched to no versions but this pipeline does not include a fine-tuning
+block. This is to keep the pipeline as clean as possible. At this stage the model will
+remain static and will not be updated. Current Val Acc. is 91%
+"""
+
 import os
 import sys
 import cv2
@@ -72,6 +79,11 @@ augmentation_pipeline = A.Compose([
 ])
 
 # Step 1: Preprocess the Image (Image Acquisition and Normalization)
+"""
+Lesion will be detected and zoom/center to use 80% of the total image space.
+Later on, a control check can be added to make sure that is the injury is not
+found, the image cannot be processed.
+"""
 def preprocess_image(image_path):
     cropped_image = crop_and_center_image(image_path)
     if cropped_image is None:
@@ -79,6 +91,8 @@ def preprocess_image(image_path):
     return cropped_image
 
 # Step 2: Patch Division and Labeling using generate_patches_from_directory
+"""Positions will be recorded in the file name to encode the position in the 
+image group. This is an added feature to the embeddings created by the CvT"""
 def divide_image_into_patches(source_dir, patch_save_dir, patch_csv_file):
     generate_patches_from_directory(source_dir, patch_save_dir, patch_csv_file)
     patches = []
@@ -91,7 +105,11 @@ def divide_image_into_patches(source_dir, patch_save_dir, patch_csv_file):
     return np.array(patches)
 
 # Step 3: Patch Generation and Augmentation using cGAN
-def augment_patches_with_cgan(patches, num_augmentations=16):
+"""
+The number of augmentations was found to be best in the range from 8 - 12 
+but this was established with a limited amount of hyperparameter search runs
+"""
+def augment_patches_with_cgan(patches, num_augmentations=12):
     augmented_patches = []
     for patch in patches:
         patch = np.expand_dims(patch, axis=0)
@@ -114,9 +132,13 @@ def classify_patches(features):
     return classifications
 
 # Step 6: Patch Classification Aggregation
+"""
+Change the majority vote % depending on how strict the system has to be.
+For now is has been set to 80%
+"""
 def aggregate_classifications(classifications):
     majority_vote = np.mean(classifications > 0.5)
-    return 1 if majority_vote > 0.5 else 0
+    return 1 if majority_vote > 0.8 else 0
 
 # Main Pipeline Execution
 def run_pipeline(input_image_path):
@@ -158,5 +180,5 @@ move_processed_images(metadata_csv_path, source_dir, patch_save_dir, label='mali
 # Generate patches from directory and save the metadata
 organise_patches_into_directories(patch_save_dir)
 
-# Example usage of run_pipeline (Main Processing Pipeline)
+# Instantiation of Main Processing Pipeline
 final_result = run_pipeline(input_image_path)
