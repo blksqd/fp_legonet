@@ -2,6 +2,12 @@ import os
 import cv2
 import pandas as pd
 
+'''
+Two functions have been defined here to handle the patch generation. One of them will handle a single image
+which can be used in the pipeline to make a prediction and pass the patches to the CGAN for augmentation.
+The second one will handle a directory with image files in case multiple predictions are required.
+'''
+
 def generate_and_save_patches(image_path, target_dir, patch_info_list, target_size=(256, 256), patch_size=(64, 64)):
     """
     Process a single image, generate patches, and save them along with metadata.
