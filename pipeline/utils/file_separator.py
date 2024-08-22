@@ -7,7 +7,7 @@ def move_processed_images(metadata_csv_path, source_dir, target_dir, label='mali
     metadata = pd.read_csv(metadata_csv_path)
 
     # Extract the IDs of images diagnosed as processed based on the specified label
-    processed_images = metadata[metadata['benign_malignant'] == label]['image_name'].tolist()
+    processed_images = metadata[metadata['benign_malignant'] == label]['image_name'].tolist() # Column name might change, check first.
 
     # Create the target directory if it doesn't exist
     os.makedirs(target_dir, exist_ok=True)
