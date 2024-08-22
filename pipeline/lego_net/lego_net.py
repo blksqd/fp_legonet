@@ -15,7 +15,7 @@ sys.path.append('/Users/andreshofmann/Desktop/Studies/Uol/7t/FP/fp_legonet/pipel
 from image_cropper import crop_and_center_image
 from file_separator import move_processed_images
 from patch_generator import generate_patches_from_directory
-from patch_organiser import organise_patches_into_directories  
+from patch_organiser import organise_patches_into_directories
 
 # Load the configuration file
 with open('config.json', 'r') as config_file:
@@ -28,9 +28,10 @@ pretrained_cvt_model = config['paths']['pretrained_cvt_model']
 pretrained_cnn_model = config['paths']['pretrained_cnn_model']
 metadata_csv_path = config['paths']['csv_path']
 source_dir = config['paths']['img_dir']
-target_dir = config['paths']['model_save_path']
-patch_save_dir = config['paths']['patch_save_dir']  # Directory where patches will be saved
-patch_csv_file = config['paths']['patch_csv_file']  # CSV file to save patch metadata
+
+# Set `patch_save_dir` and `patch_csv_file` based on expected usage
+patch_save_dir = os.path.join(source_dir, "patches")  
+patch_csv_file = os.path.join(source_dir, "patches_info.csv")  
 
 # Load the pre-trained models
 cgan_model = load_model(pretrained_cgan_model)
@@ -72,17 +73,22 @@ augmentation_pipeline = A.Compose([
 
 # Step 1: Preprocess the Image (Image Acquisition and Normalization)
 def preprocess_image(image_path):
-    # Use the crop_and_center_image function from the refactored image_cropper.py
     cropped_image = crop_and_center_image(image_path)
     if cropped_image is None:
         raise ValueError(f"Could not process image: {image_path}")
     return cropped_image
 
-# Step 2: Patch Division and Labeling
-def divide_image_into_patches(image):
-    # Divide the 256x256 image into 16 non-overlapping patches of 64x64 pixels
-    patches = generate_patches(image, patch_size=(64, 64))
-    return patches
+# Step 2: Patch Division and Labeling using generate_patches_from_directory
+def divide_image_into_patches(source_dir, patch_save_dir, patch_csv_file):
+    generate_patches_from_directory(source_dir, patch_save_dir, patch_csv_file)
+    patches = []
+    
+    # Load generated patches
+    for patch_file in os.listdir(patch_save_dir):
+        patch = cv2.imread(os.path.join(patch_save_dir, patch_file))
+        patches.append(patch)
+    
+    return np.array(patches)
 
 # Step 3: Patch Generation and Augmentation using cGAN
 def augment_patches_with_cgan(patches, num_augmentations=16):
@@ -113,26 +119,32 @@ def aggregate_classifications(classifications):
     return 1 if majority_vote > 0.5 else 0
 
 # Main Pipeline Execution
-def run_pipeline(image_path):
-    # Step 1: Preprocess the image
-    preprocessed_image = preprocess_image(image_path)
+def run_pipeline(input_image_path):
+    # Preprocess the input image
+    preprocessed_image = preprocess_image(input_image_path)
     
-    # Step 2: Divide the image into patches
-    patches = divide_image_into_patches(preprocessed_image)
+    # Save the preprocessed image to a temporary directory for patching
+    temp_preprocessed_dir = os.path.join(source_dir, "temp_preprocessed")
+    os.makedirs(temp_preprocessed_dir, exist_ok=True)
+    temp_image_path = os.path.join(temp_preprocessed_dir, "preprocessed_image.jpg")
+    cv2.imwrite(temp_image_path, preprocessed_image)
     
-    # Step 3: Augment the patches using cGAN
+    # Divide the image into patches
+    patches = divide_image_into_patches(temp_preprocessed_dir, patch_save_dir, patch_csv_file)
+    
+    # Augment the patches using the cGAN model and albumentations
     augmented_patches = augment_patches_with_cgan(patches)
     
-    # Step 4: Extract features from patches
+    # Extract features from the augmented patches using the CvT model
     features = extract_features(augmented_patches)
     
-    # Step 5: Classify patches
+    # Classify the patches using the CNN model
     classifications = classify_patches(features)
     
-    # Step 6: Aggregate patch classifications
+    # Aggregate the classifications to produce a final decision
     final_classification = aggregate_classifications(classifications)
     
-    # Output the final classification
+    # Output the final classification result
     if final_classification == 1:
         print("The image is classified as malignant.")
     else:
@@ -141,12 +153,9 @@ def run_pipeline(image_path):
     return final_classification
 
 # Preprocessing: Move the necessary images based on metadata
-move_processed_images(metadata_csv_path, source_dir, target_dir, label='malignant')
+move_processed_images(metadata_csv_path, source_dir, patch_save_dir, label='malignant')
 
 # Generate patches from directory and save the metadata
-generate_patches_from_directory(source_dir, patch_save_dir, patch_csv_file)
-
-# Organize the patches into directories based on their patch number
 organise_patches_into_directories(patch_save_dir)
 
 # Example usage of run_pipeline (Main Processing Pipeline)
