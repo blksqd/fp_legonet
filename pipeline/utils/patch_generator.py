@@ -10,8 +10,8 @@ def generate_and_save_patches(image_path, target_dir, patch_info_list, target_si
     - image_path: Path to the image to be processed.
     - target_dir: Directory where patches will be saved.
     - patch_info_list: List to store metadata about the patches.
-    - target_size: Tuple representing the target size to which images are resized.
-    - patch_size: Tuple representing the size of each patch.
+    - target_size: Tuple representing the target size to which images are resized. This can be chosen arbitrarily
+    - patch_size: Tuple representing the size of each patch. Defined by the amount of patches
     """
     # Read the image
     image = cv2.imread(image_path)
