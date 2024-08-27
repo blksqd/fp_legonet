@@ -159,9 +159,6 @@ L.E.G.O_Net/
 
 <p>L.E.G.O. Net achieves a validation accuracy of 91%. The performance metrics for different components and the full ensemble model are detailed in the final report. The system’s effectiveness is demonstrated through its ability to classify challenging melanoma cases with a high degree of accuracy.</p>
 
-<h2 style="color: #2874A6;">Conclusion</h2>
-
-<p>L.E.G.O. Net represents a significant advancement in the field of melanoma detection. By leveraging synthetic data generation, advanced feature extraction, and robust classification techniques, it offers a powerful tool for improving diagnostic accuracy in medical imaging. This project demonstrates how innovative approaches can overcome challenges related to data scarcity, class imbalance, and hardware limitations, ultimately contributing to better healthcare outcomes.</p>
 
 <h2 style="color: #2874A6;">Acknowledgments</h2>
 
