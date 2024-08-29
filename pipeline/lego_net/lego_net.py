@@ -1,6 +1,6 @@
 """
 Make sure all models are in the right directory and called from the configuration file.
-the models can be switched to no versions but this pipeline does not include a fine-tuning
+the models can be switched to new versions but this pipeline does not include a fine-tuning
 block. This is to keep the pipeline as clean as possible. At this stage the model will
 remain static and will not be updated. Current Val Acc. is 91%
 """
