@@ -1,0 +1,101 @@
+{
+  "paths": {
+    "base_dir": "../",
+    "patch_dir": "../",
+    "csv_path": "../",
+    "model_save_path": "./CGAN.h5"
+  },
+  "training": {
+    "batch_size": 64,
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "latent_dim": 128,
+    "num_classes": 2,
+    "num_channels": 3,
+    "image_size": [64, 64]
+  },
+  "data_processing": {
+    "image_rescale_factor": 255.0,
+    "shuffle_buffer_size": 1024
+  },
+  "model_architecture": {
+    "discriminator": {
+      "input_noise_stddev": 0.3,
+      "conv_layers": [
+        {
+          "filters": 64,
+          "kernel_size": [3, 3],
+          "strides": [2, 2],
+          "padding": "same",
+          "activation": "leaky_relu",
+          "alpha": 0.2
+        },
+        {
+          "filters": 128,
+          "kernel_size": [3, 3],
+          "strides": [2, 2],
+          "padding": "same",
+          "activation": "leaky_relu",
+          "alpha": 0.2
+        }
+      ],
+      "dropout_rate": 0.3,
+      "pooling": "global_max_pooling",
+      "dense_layers": [{ "units": 1 }],
+      "output_activation": null
+    },
+    "generator": {
+      "dense_layer": {
+        "units": 128,
+        "activation": "leaky_relu",
+        "alpha": 0.2
+      },
+      "conv_transpose_layers": [
+        {
+          "filters": 128,
+          "kernel_size": [4, 4],
+          "strides": [2, 2],
+          "padding": "same",
+          "activation": "leaky_relu",
+          "alpha": 0.2
+        },
+        {
+          "filters": 128,
+          "kernel_size": [4, 4],
+          "strides": [2, 2],
+          "padding": "same",
+          "activation": "leaky_relu",
+          "alpha": 0.2
+        },
+        {
+          "filters": 64,
+          "kernel_size": [4, 4],
+          "strides": [2, 2],
+          "padding": "same",
+          "activation": "leaky_relu",
+          "alpha": 0.2
+        }
+      ],
+      "output_conv": {
+        "filters": 3,
+        "kernel_size": [7, 7],
+        "padding": "same",
+        "activation": "sigmoid"
+      }
+    }
+  },
+  "training_loop": {
+    "loss_function": "binary_crossentropy",
+    "from_logits": true,
+    "optimizer": {
+      "type": "Adam",
+      "learning_rate": 0.0002
+    }
+  },
+  "model_checkpoint": {
+    "save_path": "./cond_gan_model",
+    "save_format": "h5",
+    "config_suffix": "_config.json",
+    "weights_suffix": "_weights.h5"
+  }
+}

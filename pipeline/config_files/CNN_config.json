@@ -1,0 +1,88 @@
+{
+  "paths": {
+    "base_dir": "../",
+    "csv_path": "../",
+    "img_dir": "../",
+    "model_save_path": "../CNN.h5"
+  },
+  "training": {
+    "validation_split": 0.2,
+    "fraction": 0.8,
+    "sample_fraction": 1.0,
+    "batch_size": 32,
+    "epochs": 50,
+    "initial_learning_rate": 0.001,
+    "learning_rate_decay": 0.9,
+    "patience": 10,
+    "reduce_lr_factor": 0.5,
+    "reduce_lr_patience": 5,
+    "min_lr": 1e-7
+  },
+  "data_augmentation": {
+    "rescale": 0.00392156862745098,
+    "rotation_range": 30,
+    "width_shift_range": 0.2,
+    "height_shift_range": 0.2,
+    "shear_range": 0.2,
+    "zoom_range": 0.2,
+    "horizontal_flip": true,
+    "vertical_flip": false,
+    "brightness_range": [0.8, 1.2]
+  },
+  "model_architecture": {
+    "base_model": {
+      "name": "ResNet50",
+      "weights": "imagenet",
+      "include_top": false,
+      "input_shape": [64, 64, 3],
+      "trainable_layers": false
+    },
+    "dense_layers": {
+      "units": 512,
+      "activation": "relu"
+    },
+    "dropout_rate": 0.5,
+    "output_layer": {
+      "units": 1,
+      "activation": "sigmoid"
+    }
+  },
+  "hyperparameter_tuning": {
+    "tuner": {
+      "type": "RandomSearch",
+      "objective": "val_accuracy",
+      "max_trials": 20,
+      "executions_per_trial": 1,
+      "project_name": "skin_lesion_tuning"
+    },
+    "hyperparameters": {
+      "units": {
+        "min_value": 128,
+        "max_value": 1024,
+        "step": 128
+      },
+      "dropout_rate": {
+        "min_value": 0.2,
+        "max_value": 0.7,
+        "step": 0.1
+      },
+      "learning_rate": {
+        "min_value": 1e-4,
+        "max_value": 1e-2,
+        "sampling": "LOG",
+        "default": 0.001
+      }
+    }
+  },
+  "callbacks": {
+    "early_stopping": {
+      "patience": 10,
+      "restore_best_weights": true
+    },
+    "reduce_lr_on_plateau": {
+      "factor": 0.5,
+      "patience": 5,
+      "min_lr": 1e-7
+    }
+  }
+}
